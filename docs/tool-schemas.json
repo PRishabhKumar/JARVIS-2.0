@@ -1,0 +1,1646 @@
+[
+  {
+    "tool_id": "system.get_time",
+    "version": "1.0",
+    "domain": "extra",
+    "module": "jarvis.agents.system_agent",
+    "description": "Read the local clock and time zone",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "hardware.inventory",
+    "version": "1.0",
+    "domain": "source_33",
+    "module": "jarvis.agents.system_agent",
+    "description": "Read CPU, OS and memory inventory (no device serials)",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "memory.diagnostics",
+    "version": "1.0",
+    "domain": "source_29",
+    "module": "jarvis.agents.system_agent",
+    "description": "Read memory/swap usage; never clear caches",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "health.battery",
+    "version": "1.0",
+    "domain": "addition_11",
+    "module": "jarvis.agents.system_agent",
+    "description": "Read battery sensor if the OS exposes one",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "clock.inspect",
+    "version": "1.0",
+    "domain": "addition_19",
+    "module": "jarvis.agents.system_agent",
+    "description": "Inspect local clock, time zone and locale",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "process.list",
+    "version": "1.0",
+    "domain": "source_01",
+    "module": "jarvis.agents.process_agent",
+    "description": "List process identity/name/state; omit command lines and environment",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "process.zombies",
+    "version": "1.0",
+    "domain": "source_02",
+    "module": "jarvis.agents.process_agent",
+    "description": "Inspect zombie state; never kill parents",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "process.priority",
+    "version": "1.0",
+    "domain": "source_03",
+    "module": "jarvis.agents.process_agent",
+    "description": "Inspect process priority and available affinity",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "pid": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "pid"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "process.ancestry",
+    "version": "1.0",
+    "domain": "source_04",
+    "module": "jarvis.agents.process_agent",
+    "description": "Inspect process and parent identities",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "pid": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "pid"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "process.terminate",
+    "version": "1.0",
+    "domain": "source_01",
+    "module": "jarvis.agents.process_agent",
+    "description": "Terminate a process by PID with revalidation and confirmation",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "pid": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2147483647
+        },
+        "force": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "pid"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R2",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "no automatic rollback; process termination cannot be undone",
+    "verification": "Confirm process is no longer running",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.list_directory",
+    "version": "1.0",
+    "domain": "source_07",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "List directory names within configured roots",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.get_metadata",
+    "version": "1.0",
+    "domain": "source_07",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Read in-scope file metadata",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.search_names",
+    "version": "1.0",
+    "domain": "source_07",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Bounded filename search (not semantic content search)",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "path",
+        "query"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "storage.analyze",
+    "version": "1.0",
+    "domain": "source_08",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Report largest sampled files and disk free space; no deletions",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.symlink_audit",
+    "version": "1.0",
+    "domain": "source_10",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Audit symlinks without exposing out-of-scope targets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "integrity.sha256",
+    "version": "1.0",
+    "domain": "source_28",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "SHA256 an in-scope regular file, at most 32 MiB",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "permissions.inspect",
+    "version": "1.0",
+    "domain": "source_09",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Read basic file mode; not full ACL support",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "mounts.list",
+    "version": "1.0",
+    "domain": "source_14",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "List mounted filesystem metadata; do not mount/unmount",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.find_duplicates",
+    "version": "1.0",
+    "domain": "addition_16",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Scan directory to identify duplicate files by SHA256 checksum",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "min_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "network.connections",
+    "version": "1.0",
+    "domain": "source_22",
+    "module": "jarvis.agents.network_agent",
+    "description": "Read bounded connection metadata; GeoIP is disabled",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "network.ports",
+    "version": "1.0",
+    "domain": "source_16",
+    "module": "jarvis.agents.network_agent",
+    "description": "Read sampled listening ports and process owners",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "network.interfaces",
+    "version": "1.0",
+    "domain": "source_17",
+    "module": "jarvis.agents.network_agent",
+    "description": "Inspect network interfaces; cannot configure them",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "network.diagnostics",
+    "version": "1.0",
+    "domain": "source_20",
+    "module": "jarvis.agents.network_agent",
+    "description": "Read local interface health/counters; no remote probe",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "services.status",
+    "version": "1.0",
+    "domain": "source_31",
+    "module": "jarvis.agents.inventory_agent",
+    "description": "Inspect Windows SCM, macOS launchctl or active Linux systemd",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "software.python_inventory",
+    "version": "1.0",
+    "domain": "addition_08",
+    "module": "jarvis.agents.inventory_agent",
+    "description": "List Python packages only, not installed OS applications",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "packages.detect",
+    "version": "1.0",
+    "domain": "addition_09",
+    "module": "jarvis.agents.inventory_agent",
+    "description": "Detect trusted package-manager availability; do not install",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "sessions.list",
+    "version": "1.0",
+    "domain": "addition_13",
+    "module": "jarvis.agents.inventory_agent",
+    "description": "Read current user sessions; requires consent",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "environment.inspect",
+    "version": "1.0",
+    "domain": "addition_14",
+    "module": "jarvis.agents.inventory_agent",
+    "description": "List environment variable NAMES only; redact all values",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "drivers.linux_modules",
+    "version": "1.0",
+    "domain": "source_30",
+    "module": "jarvis.agents.inventory_agent",
+    "description": "Inspect Linux loaded modules; not driver mutation",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "security.linux_capabilities",
+    "version": "1.0",
+    "domain": "source_27",
+    "module": "jarvis.agents.inventory_agent",
+    "description": "Inspect Linux capabilities of this process only",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "ipc.inspect",
+    "version": "1.0",
+    "domain": "source_06",
+    "module": "jarvis.agents.inventory_agent",
+    "description": "Inspect exposed Linux SysV IPC tables without cleanup",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "archive.inspect",
+    "version": "1.0",
+    "domain": "source_12",
+    "module": "jarvis.agents.archive_agent",
+    "description": "Inspect ZIP directory and unsafe paths; do not extract",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "archive.extract",
+    "version": "1.0",
+    "domain": "addition_15",
+    "module": "jarvis.agents.archive_agent",
+    "description": "Safely extract ZIP archive to an allowed destination folder",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "destination": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "overwrite": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "path",
+        "destination"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "extracted files remain in destination directory",
+    "verification": "Confirm destination directory exists and contains extracted files",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "app.list_allowlisted",
+    "version": "1.0",
+    "domain": "addition_01",
+    "module": "jarvis.agents.app_agent",
+    "description": "List locally approved app IDs",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "app.launch_allowlisted",
+    "version": "1.0",
+    "domain": "addition_01",
+    "module": "jarvis.agents.app_agent",
+    "description": "Launch a user-configured application ID, no model arguments",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "app_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      },
+      "required": [
+        "app_id"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "no automatic rollback; app may create state",
+    "verification": "Re-read PID and process creation time",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "clipboard.read",
+    "version": "1.0",
+    "domain": "addition_02",
+    "module": "jarvis.agents.clipboard_agent",
+    "description": "Read text from the system clipboard with automatic secret masking",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "mask_secrets": {
+          "type": "boolean"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "clipboard.write",
+    "version": "1.0",
+    "domain": "addition_02",
+    "module": "jarvis.agents.clipboard_agent",
+    "description": "Write text to the system clipboard with user confirmation",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 100000
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "overwrite with previous text if known",
+    "verification": "Confirm clipboard successfully set",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "screen.capture",
+    "version": "1.0",
+    "domain": "addition_03",
+    "module": "jarvis.agents.screen_agent",
+    "description": "Capture full desktop screenshot to a PNG file within allowed roots or state folder",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "delete captured file if requested",
+    "verification": "Confirm screenshot file exists on disk with non-zero size",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "audio.get_volume",
+    "version": "1.0",
+    "domain": "addition_05",
+    "module": "jarvis.agents.audio_control_agent",
+    "description": "Get system master audio volume level (0-100) and mute status",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "audio.set_volume",
+    "version": "1.0",
+    "domain": "addition_05",
+    "module": "jarvis.agents.audio_control_agent",
+    "description": "Set master audio volume to a specified percentage (0 to 100)",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "level"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "restore previous volume level",
+    "verification": "Confirm volume setting applied",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "audio.toggle_mute",
+    "version": "1.0",
+    "domain": "addition_05",
+    "module": "jarvis.agents.audio_control_agent",
+    "description": "Toggle or set system master audio mute",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "toggle mute again to restore",
+    "verification": "Confirm mute toggle executed",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "power.lock",
+    "version": "1.0",
+    "domain": "addition_12",
+    "module": "jarvis.agents.power_agent",
+    "description": "Lock user workstation session immediately",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "user unlocks workstation manually with credentials",
+    "verification": "Confirm lock signal sent to OS",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "power.restart",
+    "version": "1.0",
+    "domain": "addition_12",
+    "module": "jarvis.agents.power_agent",
+    "description": "Schedule a system restart with countdown delay and abort window",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "delay_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3600
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R3",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "call power.cancel_shutdown within the delay countdown",
+    "verification": "Confirm shutdown scheduler accepted restart command",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "power.shutdown",
+    "version": "1.0",
+    "domain": "addition_12",
+    "module": "jarvis.agents.power_agent",
+    "description": "Schedule a system shutdown with countdown delay and abort window",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "delay_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3600
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R3",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "call power.cancel_shutdown within the delay countdown",
+    "verification": "Confirm shutdown scheduler accepted shutdown command",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "power.cancel_shutdown",
+    "version": "1.0",
+    "domain": "addition_12",
+    "module": "jarvis.agents.power_agent",
+    "description": "Cancel a previously scheduled system restart or shutdown",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "re-schedule shutdown if needed",
+    "verification": "Confirm cancellation accepted by OS",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "display.get_brightness",
+    "version": "1.0",
+    "domain": "addition_04",
+    "module": "jarvis.agents.display_agent",
+    "description": "Get primary display brightness percentage (0-100) and capability state",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "display.set_brightness",
+    "version": "1.0",
+    "domain": "addition_04",
+    "module": "jarvis.agents.display_agent",
+    "description": "Set primary display brightness to a specified percentage (0 to 100)",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "level"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "restore previous brightness level",
+    "verification": "Confirm brightness setting applied",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "display.get_resolution",
+    "version": "1.0",
+    "domain": "addition_04",
+    "module": "jarvis.agents.display_agent",
+    "description": "Inspect display resolution and monitor count",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "wifi.get_status",
+    "version": "1.0",
+    "domain": "source_17",
+    "module": "jarvis.agents.wireless_agent",
+    "description": "Get Wi-Fi radio status, connection state, SSID and signal strength",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "wifi.set_state",
+    "version": "1.0",
+    "domain": "source_17",
+    "module": "jarvis.agents.wireless_agent",
+    "description": "Turn Wi-Fi radio on or off",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "toggle wifi back to previous state",
+    "verification": "Confirm Wi-Fi state updated",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "bluetooth.get_status",
+    "version": "1.0",
+    "domain": "addition_06",
+    "module": "jarvis.agents.wireless_agent",
+    "description": "Get Bluetooth radio state and connected devices",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "bluetooth.set_state",
+    "version": "1.0",
+    "domain": "addition_06",
+    "module": "jarvis.agents.wireless_agent",
+    "description": "Turn Bluetooth radio on or off",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "toggle bluetooth back to previous state",
+    "verification": "Confirm Bluetooth state updated",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "hotspot.get_status",
+    "version": "1.0",
+    "domain": "source_17",
+    "module": "jarvis.agents.wireless_agent",
+    "description": "Get Windows Mobile Hotspot state and client count",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "hotspot.set_state",
+    "version": "1.0",
+    "domain": "source_17",
+    "module": "jarvis.agents.wireless_agent",
+    "description": "Turn Windows Mobile Hotspot on or off",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "toggle mobile hotspot back to previous state",
+    "verification": "Confirm Mobile Hotspot state updated",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  }
+]

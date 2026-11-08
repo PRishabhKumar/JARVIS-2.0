@@ -1,0 +1,7 @@
+{
+  "roots": ["."],
+  "model": "gemini-3.8-live",
+  "apps": {},
+  "allow_mutations": false,
+  "max_calls": 25
+}

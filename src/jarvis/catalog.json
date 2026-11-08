@@ -1,0 +1,1251 @@
+[
+  {
+    "family_id": "source_01",
+    "name": "Process selection/termination",
+    "planned_operations": [
+      "list",
+      "terminate"
+    ],
+    "registered_tools": [
+      "process.list",
+      "process.terminate"
+    ],
+    "modules": [
+      "jarvis.agents.process_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_02",
+    "name": "Zombie inspection",
+    "planned_operations": [
+      "inspect"
+    ],
+    "registered_tools": [
+      "process.zombies"
+    ],
+    "modules": [
+      "jarvis.agents.process_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_03",
+    "name": "Priority/affinity",
+    "planned_operations": [
+      "inspect",
+      "set_priority",
+      "set_affinity"
+    ],
+    "registered_tools": [
+      "process.priority"
+    ],
+    "modules": [
+      "jarvis.agents.process_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_04",
+    "name": "Process ancestry",
+    "planned_operations": [
+      "inspect"
+    ],
+    "registered_tools": [
+      "process.ancestry"
+    ],
+    "modules": [
+      "jarvis.agents.process_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_05",
+    "name": "Background jobs",
+    "planned_operations": [
+      "start",
+      "status",
+      "cancel",
+      "restart_recovery"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_06",
+    "name": "IPC inspection/cleanup",
+    "planned_operations": [
+      "inspect",
+      "cleanup"
+    ],
+    "registered_tools": [
+      "ipc.inspect"
+    ],
+    "modules": [
+      "jarvis.agents.inventory_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_07",
+    "name": "Semantic file search",
+    "planned_operations": [
+      "list_directory",
+      "search_names",
+      "get_metadata",
+      "semantic_search"
+    ],
+    "registered_tools": [
+      "filesystem.list_directory",
+      "filesystem.get_metadata",
+      "filesystem.search_names"
+    ],
+    "modules": [
+      "jarvis.agents.filesystem_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_08",
+    "name": "Storage analysis/cleanup",
+    "planned_operations": [
+      "analyze",
+      "preview_cleanup",
+      "cleanup"
+    ],
+    "registered_tools": [
+      "storage.analyze"
+    ],
+    "modules": [
+      "jarvis.agents.filesystem_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_09",
+    "name": "Permissions/ACL",
+    "planned_operations": [
+      "inspect",
+      "inspect_acl",
+      "modify_acl"
+    ],
+    "registered_tools": [
+      "permissions.inspect"
+    ],
+    "modules": [
+      "jarvis.agents.filesystem_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_10",
+    "name": "Symlink audit",
+    "planned_operations": [
+      "audit"
+    ],
+    "registered_tools": [
+      "filesystem.symlink_audit"
+    ],
+    "modules": [
+      "jarvis.agents.filesystem_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_11",
+    "name": "Directory watch",
+    "planned_operations": [
+      "start",
+      "events",
+      "stop"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_12",
+    "name": "Archive/encrypt",
+    "planned_operations": [
+      "inspect",
+      "create_archive",
+      "encrypt"
+    ],
+    "registered_tools": [
+      "archive.inspect"
+    ],
+    "modules": [
+      "jarvis.agents.archive_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_13",
+    "name": "Secure deletion",
+    "planned_operations": [
+      "limitations",
+      "ordinary_delete",
+      "crypto_erase_guidance"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_14",
+    "name": "Mount/image",
+    "planned_operations": [
+      "list",
+      "mount",
+      "unmount",
+      "image"
+    ],
+    "registered_tools": [
+      "mounts.list"
+    ],
+    "modules": [
+      "jarvis.agents.filesystem_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_15",
+    "name": "Log archive/rotation",
+    "planned_operations": [
+      "inspect",
+      "archive",
+      "rotate"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_16",
+    "name": "Port ownership",
+    "planned_operations": [
+      "list"
+    ],
+    "registered_tools": [
+      "network.ports"
+    ],
+    "modules": [
+      "jarvis.agents.network_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_17",
+    "name": "Interface configuration",
+    "planned_operations": [
+      "inspect",
+      "configure"
+    ],
+    "registered_tools": [
+      "network.interfaces",
+      "wifi.get_status",
+      "wifi.set_state",
+      "hotspot.get_status",
+      "hotspot.set_state"
+    ],
+    "modules": [
+      "jarvis.agents.network_agent",
+      "jarvis.agents.wireless_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_18",
+    "name": "Firewall",
+    "planned_operations": [
+      "inspect",
+      "preview_rule",
+      "apply_rule",
+      "recover"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_19",
+    "name": "Per-process bandwidth",
+    "planned_operations": [
+      "inspect"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_20",
+    "name": "Connectivity diagnostics",
+    "planned_operations": [
+      "local_status",
+      "probe"
+    ],
+    "registered_tools": [
+      "network.diagnostics"
+    ],
+    "modules": [
+      "jarvis.agents.network_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_21",
+    "name": "SSH key management",
+    "planned_operations": [
+      "public_key_metadata",
+      "create_key",
+      "remove_key"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_22",
+    "name": "Connection audit",
+    "planned_operations": [
+      "inspect"
+    ],
+    "registered_tools": [
+      "network.connections"
+    ],
+    "modules": [
+      "jarvis.agents.network_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_23",
+    "name": "User/group management",
+    "planned_operations": [
+      "inspect",
+      "create",
+      "update",
+      "remove"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_24",
+    "name": "Password policy",
+    "planned_operations": [
+      "inspect",
+      "update_policy"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_25",
+    "name": "Sudo/admin policy",
+    "planned_operations": [
+      "inspect",
+      "validate_dropin",
+      "apply_dropin"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_26",
+    "name": "Login audit",
+    "planned_operations": [
+      "inspect"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_27",
+    "name": "Linux capabilities",
+    "planned_operations": [
+      "inspect",
+      "modify"
+    ],
+    "registered_tools": [
+      "security.linux_capabilities"
+    ],
+    "modules": [
+      "jarvis.agents.inventory_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_28",
+    "name": "Integrity baselines",
+    "planned_operations": [
+      "sha256",
+      "create_baseline",
+      "compare_baseline"
+    ],
+    "registered_tools": [
+      "integrity.sha256"
+    ],
+    "modules": [
+      "jarvis.agents.filesystem_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_29",
+    "name": "Memory/swap diagnostics",
+    "planned_operations": [
+      "inspect"
+    ],
+    "registered_tools": [
+      "memory.diagnostics"
+    ],
+    "modules": [
+      "jarvis.agents.system_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_30",
+    "name": "Driver/module management",
+    "planned_operations": [
+      "inspect_linux_modules",
+      "load_module",
+      "unload_module"
+    ],
+    "registered_tools": [
+      "drivers.linux_modules"
+    ],
+    "modules": [
+      "jarvis.agents.inventory_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_31",
+    "name": "Services",
+    "planned_operations": [
+      "status",
+      "start",
+      "stop",
+      "restart"
+    ],
+    "registered_tools": [
+      "services.status"
+    ],
+    "modules": [
+      "jarvis.agents.inventory_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_32",
+    "name": "Scheduling",
+    "planned_operations": [
+      "list",
+      "create",
+      "update",
+      "cancel"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_33",
+    "name": "Hardware inventory",
+    "planned_operations": [
+      "inspect"
+    ],
+    "registered_tools": [
+      "hardware.inventory"
+    ],
+    "modules": [
+      "jarvis.agents.system_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "source_34",
+    "name": "Power management",
+    "planned_operations": [
+      "inspect",
+      "set_mode"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "source_35",
+    "name": "Kernel/system logs",
+    "planned_operations": [
+      "inspect"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "addition_01",
+    "name": "Apps/windows",
+    "planned_operations": [
+      "list_allowlisted",
+      "launch",
+      "quit",
+      "focus"
+    ],
+    "registered_tools": [
+      "app.list_allowlisted",
+      "app.launch_allowlisted"
+    ],
+    "modules": [
+      "jarvis.agents.app_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_02",
+    "name": "Clipboard",
+    "planned_operations": [
+      "read_with_consent",
+      "write_with_consent"
+    ],
+    "registered_tools": [
+      "clipboard.read",
+      "clipboard.write"
+    ],
+    "modules": [
+      "jarvis.agents.clipboard_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_03",
+    "name": "Screen capture/recording",
+    "planned_operations": [
+      "screenshot",
+      "record",
+      "stop"
+    ],
+    "registered_tools": [
+      "screen.capture"
+    ],
+    "modules": [
+      "jarvis.agents.screen_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_04",
+    "name": "Display settings",
+    "planned_operations": [
+      "inspect",
+      "set_resolution",
+      "set_scaling",
+      "set_orientation",
+      "set_layout"
+    ],
+    "registered_tools": [
+      "display.get_brightness",
+      "display.set_brightness",
+      "display.get_resolution"
+    ],
+    "modules": [
+      "jarvis.agents.display_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_05",
+    "name": "Audio controls",
+    "planned_operations": [
+      "inspect",
+      "select_device",
+      "set_volume",
+      "mute"
+    ],
+    "registered_tools": [
+      "audio.get_volume",
+      "audio.set_volume",
+      "audio.toggle_mute"
+    ],
+    "modules": [
+      "jarvis.agents.audio_control_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_06",
+    "name": "Bluetooth",
+    "planned_operations": [
+      "discover",
+      "pair",
+      "connect",
+      "disconnect"
+    ],
+    "registered_tools": [
+      "bluetooth.get_status",
+      "bluetooth.set_state"
+    ],
+    "modules": [
+      "jarvis.agents.wireless_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_07",
+    "name": "Printer",
+    "planned_operations": [
+      "discover",
+      "queue",
+      "pause",
+      "resume",
+      "cancel_job"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "addition_08",
+    "name": "Software inventory",
+    "planned_operations": [
+      "os_inventory",
+      "python_inventory",
+      "launch",
+      "uninstall"
+    ],
+    "registered_tools": [
+      "software.python_inventory"
+    ],
+    "modules": [
+      "jarvis.agents.inventory_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_09",
+    "name": "Packages",
+    "planned_operations": [
+      "detect_manager",
+      "install",
+      "update"
+    ],
+    "registered_tools": [
+      "packages.detect"
+    ],
+    "modules": [
+      "jarvis.agents.inventory_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_10",
+    "name": "OS updates",
+    "planned_operations": [
+      "status",
+      "update",
+      "restart_workflow"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "addition_11",
+    "name": "Battery/thermal/health",
+    "planned_operations": [
+      "battery",
+      "thermal",
+      "health"
+    ],
+    "registered_tools": [
+      "health.battery"
+    ],
+    "modules": [
+      "jarvis.agents.system_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_12",
+    "name": "Lock/signout/restart/shutdown",
+    "planned_operations": [
+      "preview",
+      "schedule",
+      "cancel"
+    ],
+    "registered_tools": [
+      "power.lock",
+      "power.restart",
+      "power.shutdown",
+      "power.cancel_shutdown"
+    ],
+    "modules": [
+      "jarvis.agents.power_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_13",
+    "name": "User sessions/desktops",
+    "planned_operations": [
+      "list",
+      "switch",
+      "lock"
+    ],
+    "registered_tools": [
+      "sessions.list"
+    ],
+    "modules": [
+      "jarvis.agents.inventory_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_14",
+    "name": "Environment/PATH",
+    "planned_operations": [
+      "inspect_names",
+      "inspect_path",
+      "set_user",
+      "set_system"
+    ],
+    "registered_tools": [
+      "environment.inspect"
+    ],
+    "modules": [
+      "jarvis.agents.inventory_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_15",
+    "name": "Archive extraction",
+    "planned_operations": [
+      "preview_safe_extraction",
+      "extract"
+    ],
+    "registered_tools": [
+      "archive.extract"
+    ],
+    "modules": [
+      "jarvis.agents.archive_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_16",
+    "name": "Duplicate files",
+    "planned_operations": [
+      "detect",
+      "review",
+      "deduplicate"
+    ],
+    "registered_tools": [
+      "filesystem.find_duplicates"
+    ],
+    "modules": [
+      "jarvis.agents.filesystem_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_17",
+    "name": "Recycle Bin/Trash",
+    "planned_operations": [
+      "inspect",
+      "restore",
+      "empty"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "addition_18",
+    "name": "Backup/snapshot restore",
+    "planned_operations": [
+      "inspect",
+      "snapshot",
+      "restore"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  },
+  {
+    "family_id": "addition_19",
+    "name": "Clock/timezone/locale",
+    "planned_operations": [
+      "inspect",
+      "set_timezone",
+      "set_clock",
+      "set_locale"
+    ],
+    "registered_tools": [
+      "clock.inspect"
+    ],
+    "modules": [
+      "jarvis.agents.system_agent"
+    ],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "partial",
+    "release_blocker": true,
+    "tests": "tests/test_providers.py; tests/test_foundation.py",
+    "limitations": "Read-oriented slice only; remaining operations and target-device validation required."
+  },
+  {
+    "family_id": "addition_20",
+    "name": "App permissions/privacy",
+    "planned_operations": [
+      "inspect_status",
+      "guided_settings"
+    ],
+    "registered_tools": [],
+    "modules": [],
+    "provider_targets": [
+      "Windows",
+      "macOS",
+      "Linux"
+    ],
+    "status": "not_implemented",
+    "release_blocker": true,
+    "tests": null,
+    "limitations": "Missing provider implementation and operation-specific schemas/tests. NOT an OS unsupported claim."
+  }
+]
