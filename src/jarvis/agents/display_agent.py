@@ -123,7 +123,7 @@ def register(registry, settings, scope):
             info = _get_resolution_windows()
             if info:
                 return ToolResult.ok(**info, provider="Windows User32")
-        return ToolResult.error("DISPLAY_QUERY_FAILED", "failed")
+        return ToolResult.error("OS_UNSUPPORTED", "unsupported")
 
     registry.register(
         ToolSpec(
