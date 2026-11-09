@@ -43,12 +43,24 @@ class AudioIO:
                 return
             self.buffer.extend(data)
 
+    def is_playing(self):
+        with self.lock:
+            return len(self.buffer) > 0
+
+    async def wait_playback_complete(self, timeout=15.0):
+        end = time.monotonic() + timeout
+        while time.monotonic() < end:
+            if not self.is_playing():
+                await asyncio.sleep(0.05)
+                return
+            await asyncio.sleep(0.05)
+
     def clear(self):
         with self.lock:
             self.buffer.clear()
         # Output callback blocks are 20 ms. No long queued device writes to drain.
 
-    async def capture(self, seconds=None):
+    async def capture(self, seconds=None, echo_guard=False):
         import sounddevice as sd
 
         loop = asyncio.get_running_loop()
@@ -57,6 +69,9 @@ class AudioIO:
 
         def offer(data):
             if not accepting:
+                return
+            if echo_guard and self.is_playing():
+                # Echo guard: drop microphone audio while JARVIS is actively speaking through speakers
                 return
             if queue.full():
                 queue.get_nowait()

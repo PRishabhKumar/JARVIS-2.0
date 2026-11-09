@@ -14,6 +14,7 @@ class Settings(StrictModel):
     allow_mutations: bool = False
     confirmation_threshold: str = "R2"
     max_calls: int = Field(default=25, ge=1, le=100)
+    voice_name: str = "Puck"
 
     @classmethod
     def load(cls, path: str | None = None):
@@ -48,6 +49,8 @@ class Settings(StrictModel):
             raw_t = os.environ["JARVIS_CONFIRMATION_THRESHOLD"].strip().upper()
             if raw_t in ("R0", "R1", "R2", "R3"):
                 data["confirmation_threshold"] = raw_t
+        if "voice_name" not in data and (os.environ.get("JARVIS_VOICE") or os.environ.get("JARVIS_VOICE_NAME")):
+            data["voice_name"] = (os.environ.get("JARVIS_VOICE") or os.environ.get("JARVIS_VOICE_NAME")).strip("\"'")
         if "max_calls" not in data and os.environ.get("JARVIS_MAX_CALLS"):
             try:
                 data["max_calls"] = int(os.environ["JARVIS_MAX_CALLS"])

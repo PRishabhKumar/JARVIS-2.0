@@ -16,16 +16,18 @@ from .orchestrator import AgentCoordinator
 from .policy import PolicyGate
 from .storage.store import Store
 
-BANNER = "JARVIS 0.1 · CLI engineering preview · not a completed V1 release"
+BANNER = "JARVIS 1.0 · Autonomous AI Voice Assistant"
 HELP = """/help                  show commands
+/ptt [seconds]         push-to-talk microphone capture (default 5s)
 /tools [query]         discover actual registered typed tools
 /call tool.id {JSON}   request a tool through the policy gate
 /status                invocation budget and busy/stop state
 /stop                  cancel active work; never replay writes
 /reset                 reset stop latch after cancellation
 /quit                  close session
-Mock fixtures: What time is it? | List this folder | Show processes | Show hardware
-Live mode: free-form text is interpreted by Gemini, not a local intent table.
+
+Hands-free voice mode: run 'jarvis voice' or 'jarvis --voice'
+Dynamic Gemini Live:   free-form spoken and typed input with live speech synthesis.
 """
 
 
@@ -60,7 +62,7 @@ def parser():
     p.add_argument(
         "command",
         nargs="?",
-        choices=["run", "tools", "doctor", "credentials", "satellite", "server", "evaluate-wake", "smoke"],
+        choices=["run", "voice", "tools", "doctor", "credentials", "satellite", "server", "evaluate-wake", "smoke"],
         default="run",
     )
     p.add_argument("arguments", nargs="*")
@@ -70,6 +72,9 @@ def parser():
     p.add_argument("--root", help="Explicit allowed file root")
     p.add_argument("--model", help="Exact model ID; defaults to settings.model")
     p.add_argument("--audio", action="store_true", help="Enable audio output in Live mode")
+    p.add_argument("--voice", action="store_true", help="Start continuous hands-free voice assistant mode")
+    p.add_argument("--voice-name", help="Voice persona name (Puck, Charon, Kore, Fenrir, Aoede)")
+    p.add_argument("--echo-guard", action="store_true", default=True, help="Drop microphone audio while JARVIS is actively speaking")
     p.add_argument("--wake-model", help="Explicit locally installed ONNX wake model")
     p.add_argument("--wake-name", default="hey_jarvis")
     p.add_argument("--server-url", help="Optional authenticated HTTPS heartbeat server; no remote execution")
@@ -103,9 +108,8 @@ async def run(args, settings):
             from .voice.audio import AudioIO
 
             print("[privacy] Typed text, approved tool results and activated microphone audio go to Google.")
-            print(
-                "[safety] Live model sessions expose read-only tools only. Mutations use /call with local approval."
-            )
+            active_tools = len(registry.declarations(writes=settings.allow_mutations))
+            print(f"[safety] Live assistant connected with {active_tools} active tools (mutations: {settings.allow_mutations}).")
             audio = AudioIO() if args.audio else None
             live = GeminiSession(
                 get_secret("gemini"),
@@ -114,6 +118,10 @@ async def run(args, settings):
                 core,
                 emit=lambda t: print(t, end="", flush=True),
                 audio=audio,
+                on_input_transcript=lambda t: print(f"\n[You]: {t}"),
+                on_tool_call=lambda name, args: print(f"\n⚡ [action] {name}({json.dumps(args)})"),
+                on_tool_result=lambda name, res: print(f"✓ [result] {res.status}"),
+                voice_name=getattr(args, "voice_name", None) or settings.voice_name,
             )
             await live.connect()
             session = live
@@ -133,8 +141,10 @@ async def run(args, settings):
                     ToolCall(call_id=uuid4().hex, name=name, arguments=json.loads(raw))
                 )
                 print(json.dumps(result.model_dump(), indent=2))
-            elif line == "/ptt" and live:
-                await live.push_to_talk(seconds=5)
+            elif line.startswith("/ptt") and live:
+                parts = line.split()
+                secs = int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 5
+                await live.push_to_talk(seconds=secs)
             elif live:
                 await live.text_turn(line)
             else:
@@ -213,13 +223,119 @@ async def run(args, settings):
         store.close()
 
 
+async def run_voice(args, settings):
+    from .models.gemini import GeminiSession
+    from .storage.credentials import get_secret
+    from .voice.audio import AudioIO
+
+    registry = build_registry(settings)
+    terminal = Terminal()
+    state = Path(settings.state_dir)
+    store = Store(state / "state.db")
+    context = ExecutionContext(
+        session_id=uuid4().hex,
+        max_calls=settings.max_calls,
+        maximum_effect="local_write" if settings.allow_mutations else "read",
+    )
+    gate = PolicyGate(
+        terminal.confirm,
+        threshold=Risk(settings.confirmation_threshold),
+    )
+    core = AgentCoordinator(registry, gate, store, context)
+    audio = AudioIO()
+
+    model_name = args.model or settings.model
+    voice_name = getattr(args, "voice_name", None) or settings.voice_name
+    stop_event = asyncio.Event()
+
+    async def on_input_transcript(text):
+        normalized = text.strip()
+        if not normalized:
+            return
+        print(f"\n[You]: {normalized}")
+        lower = normalized.casefold().rstrip(".!?")
+        if lower in {"stop", "cancel", "halt"}:
+            print("\n[JARVIS]: Halting active action.")
+            core.stop()
+            audio.clear()
+            if live:
+                await live.interrupt()
+        elif lower in {"quit", "exit", "shutdown jarvis", "goodbye jarvis", "bye jarvis"}:
+            print("\n[JARVIS]: Goodbye! Shutting down voice session.")
+            stop_event.set()
+
+    async def on_tool_call(name, tool_args):
+        print(f"\n⚡ [action] {name}({json.dumps(tool_args)})")
+
+    async def on_tool_result(name, res):
+        print(f"✓ [result] {res.status}")
+
+    active_count = len(registry.declarations(writes=settings.allow_mutations))
+    print("\n" + "=" * 65)
+    print("           JARVIS 1.0 · Autonomous AI Voice Assistant")
+    print("=" * 65)
+    print(f" Model:       {model_name} (Gemini Live Stream)")
+    print(f" Voice:       {voice_name} · Audio: 16kHz In / 24kHz Out PCM")
+    print(f" Tools:       {active_count} Registered System Tools (mutations: {settings.allow_mutations})")
+    print(" Microphone:  ACTIVE · Hands-free (Say 'exit' or press Ctrl+C to quit)")
+    print("=" * 65 + "\n")
+
+    live = GeminiSession(
+        get_secret("gemini"),
+        model_name,
+        registry,
+        core,
+        emit=lambda t: print(t, end="", flush=True),
+        audio=audio,
+        on_input_transcript=on_input_transcript,
+        on_tool_call=on_tool_call,
+        on_tool_result=on_tool_result,
+        voice_name=voice_name,
+    )
+
+    try:
+        print("[connecting] Initializing Gemini Live bidirectional stream...")
+        await live.connect()
+        print("[online] Connected! JARVIS is listening. Speak to your microphone...\n")
+
+        async def mic_loop():
+            try:
+                echo_guard = getattr(args, "echo_guard", True)
+                async for chunk in audio.capture(echo_guard=echo_guard):
+                    if stop_event.is_set() or live.failed or not live.session:
+                        break
+                    await live.send_audio(chunk)
+            except asyncio.CancelledError:
+                pass
+            except Exception as e:
+                if not stop_event.is_set():
+                    print(f"\n[mic stream error] {e}")
+
+        mic_task = asyncio.create_task(mic_loop())
+
+        while not stop_event.is_set() and not live.failed:
+            await asyncio.sleep(0.2)
+
+        mic_task.cancel()
+        await asyncio.gather(mic_task, return_exceptions=True)
+    finally:
+        core.stop()
+        if live:
+            await live.close()
+        audio.close()
+        store.close()
+        print("\n[offline] JARVIS voice session closed.")
+
+
 def main():
     args = parser().parse_args()
     try:
         settings = Settings.load(args.config)
         if os.environ.get("JARVIS_MODEL"):
             settings = settings.model_copy(update={"model": os.environ["JARVIS_MODEL"]})
-        if args.command == "smoke":
+        if args.command == "voice" or args.voice:
+            asyncio.run(run_voice(args, settings))
+        elif args.command == "smoke":
             args.once = "What time is it?"
         if args.root:
             settings = settings.model_copy(update={"roots": [str(Path(args.root).resolve(strict=True))]})
