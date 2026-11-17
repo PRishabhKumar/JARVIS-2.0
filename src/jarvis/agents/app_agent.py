@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import asyncio
 import os
+import platform
+import shutil
 from pathlib import Path
 import psutil
 from jarvis.contracts import ToolResult, ToolSpec, Risk
-from jarvis.registry import schema, TEXT
+from jarvis.registry import schema, TEXT, PATH
 
 
 def register(registry, settings, scope):
@@ -104,4 +106,114 @@ def register(registry, settings, scope):
         preview=lambda a: (
             f"Launch allowlisted app {a['app_id']!r}; configured profile {list(apps.get(a['app_id'], ()))!r}. No window-focus guarantee."
         ),
+    )
+
+    async def open_target(args):
+        target_path = scope.resolve(args["target"])
+        if not target_path.exists():
+            return ToolResult.error("TARGET_NOT_FOUND", message=f"Target path not found: {target_path}")
+
+        application = args.get("application", "default").lower()
+        import subprocess
+
+        env = {
+            k: v
+            for k, v in os.environ.items()
+            if k
+            in {
+                "PATH",
+                "HOME",
+                "USERPROFILE",
+                "SYSTEMROOT",
+                "WINDIR",
+                "TEMP",
+                "TMP",
+                "LOCALAPPDATA",
+                "APPDATA",
+                "PROGRAMFILES",
+            }
+        }
+
+        cmd = []
+        if application in ("vscode", "code"):
+            code_bin = shutil.which("code.cmd") or shutil.which("code")
+            if not code_bin:
+                candidates = [
+                    Path(os.environ.get("LOCALAPPDATA", "")) / "Programs" / "Microsoft VS Code" / "bin" / "code.cmd",
+                    Path(os.environ.get("LOCALAPPDATA", "")) / "Programs" / "Microsoft VS Code" / "Code.exe",
+                    Path(os.environ.get("PROGRAMFILES", "C:\\Program Files")) / "Microsoft VS Code" / "bin" / "code.cmd",
+                    Path(os.environ.get("PROGRAMFILES", "C:\\Program Files")) / "Microsoft VS Code" / "Code.exe",
+                ]
+                for c in candidates:
+                    if c.is_file():
+                        code_bin = str(c)
+                        break
+            if not code_bin:
+                return ToolResult.error(
+                    "VSCODE_NOT_FOUND",
+                    message="VS Code executable ('code') not found in PATH or standard install directories",
+                )
+            cmd = [code_bin, str(target_path)]
+
+        elif application == "explorer":
+            explorer_bin = os.path.join(os.environ.get("WINDIR", "C:\\Windows"), "explorer.exe")
+            cmd = [explorer_bin, str(target_path)]
+
+        elif application == "notepad":
+            notepad_bin = os.path.join(os.environ.get("WINDIR", "C:\\Windows"), "notepad.exe")
+            cmd = [notepad_bin, str(target_path)]
+
+        elif application == "default":
+            if platform.system() == "Windows":
+                try:
+                    os.startfile(str(target_path))
+                    return ToolResult.ok(
+                        target=str(target_path),
+                        application="default_os_handler",
+                        launched=True,
+                    )
+                except Exception as e:
+                    return ToolResult.error("LAUNCH_FAILED", message=str(e))
+            elif platform.system() == "Darwin":
+                cmd = ["open", str(target_path)]
+            else:
+                cmd = ["xdg-open", str(target_path)]
+
+        if cmd:
+            try:
+                proc = psutil.Popen(
+                    cmd,
+                    shell=False,
+                    stdin=subprocess.DEVNULL,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    env=env,
+                )
+                await asyncio.sleep(0.15)
+                return ToolResult.ok(
+                    target=str(target_path),
+                    application=application,
+                    pid=proc.pid,
+                    launched=True,
+                )
+            except Exception as e:
+                return ToolResult.error("LAUNCH_FAILED", message=str(e))
+
+        return ToolResult.error("APPLICATION_UNSUPPORTED", message=f"Application {application} is not supported")
+
+    registry.register(
+        ToolSpec(
+            tool_id="app.open_target",
+            domain="extra",
+            module=__name__,
+            description="Open a file or folder in a specified application (vscode, explorer, notepad, or default)",
+            input_schema=schema(
+                {"target": PATH, "application": {"type": "string", "enum": ["vscode", "code", "explorer", "notepad", "default"]}},
+                ["target"],
+            ),
+            risk=Risk.R1,
+            effect="local_write",
+            rollback="no automatic rollback",
+        ),
+        open_target,
     )

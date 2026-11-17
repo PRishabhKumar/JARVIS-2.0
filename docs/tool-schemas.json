@@ -616,6 +616,316 @@
     "audit_policy": "metadata only; no arguments, output, transcripts or audio"
   },
   {
+    "tool_id": "filesystem.locate_path",
+    "version": "1.0",
+    "domain": "extra",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Fast recursive search across drives for a folder or file by name",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "root": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "directory",
+            "file",
+            "any"
+          ]
+        },
+        "max_depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.inspect_directory",
+    "version": "1.0",
+    "domain": "extra",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Deep breakdown of files in a directory grouped by extensions, categories, counts, and sizes",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "recursive": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R0",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "read",
+    "rollback": "not applicable (read only)",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.create_directory",
+    "version": "1.0",
+    "domain": "extra",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Create a new directory (and parents) safely at the target path",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "no automatic rollback",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.move_items",
+    "version": "1.0",
+    "domain": "extra",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Move one or more files/directories into a target destination directory",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 1
+        },
+        "destination": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "overwrite": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "sources",
+        "destination"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "no automatic rollback",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.copy_items",
+    "version": "1.0",
+    "domain": "extra",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Copy one or more files/directories into a target destination directory",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 1
+        },
+        "destination": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "overwrite": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "sources",
+        "destination"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "no automatic rollback",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.delete_items",
+    "version": "1.0",
+    "domain": "extra",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Delete one or more files or directories (mandatory confirmation guardrail)",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "paths"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R2",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "no automatic rollback",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "filesystem.organize_by_type",
+    "version": "1.0",
+    "domain": "extra",
+    "module": "jarvis.agents.filesystem_agent",
+    "description": "Intelligently organize files in a folder into subfolders by category, extension, or custom mapping",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "folder_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "grouping": {
+          "type": "string",
+          "enum": [
+            "category",
+            "extension"
+          ]
+        },
+        "custom_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "folder_path"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "no automatic rollback",
+    "verification": "provider observation and normalized result contract",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
     "tool_id": "network.connections",
     "version": "1.0",
     "domain": "source_22",
@@ -1074,6 +1384,50 @@
     "effect": "local_write",
     "rollback": "no automatic rollback; app may create state",
     "verification": "Re-read PID and process creation time",
+    "audit_policy": "metadata only; no arguments, output, transcripts or audio"
+  },
+  {
+    "tool_id": "app.open_target",
+    "version": "1.0",
+    "domain": "extra",
+    "module": "jarvis.agents.app_agent",
+    "description": "Open a file or folder in a specified application (vscode, explorer, notepad, or default)",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "application": {
+          "type": "string",
+          "enum": [
+            "vscode",
+            "code",
+            "explorer",
+            "notepad",
+            "default"
+          ]
+        }
+      },
+      "required": [
+        "target"
+      ],
+      "additionalProperties": false
+    },
+    "risk": "R1",
+    "supported_os": [
+      "Windows",
+      "Darwin",
+      "Linux"
+    ],
+    "permission": "current user",
+    "timeout_seconds": 10.0,
+    "output_limit": 24576,
+    "effect": "local_write",
+    "rollback": "no automatic rollback",
+    "verification": "provider observation and normalized result contract",
     "audit_policy": "metadata only; no arguments, output, transcripts or audio"
   },
   {

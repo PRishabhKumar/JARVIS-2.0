@@ -269,20 +269,30 @@ async def test_stop_cancels_pending_confirmation_prompt(core):
 
 
 async def test_schema_boolean_not_integer_property(core):
-    from hypothesis import given, settings, strategies as st
+    try:
+        from hypothesis import given, settings, strategies as st
+        has_hypothesis = True
+    except ImportError:
+        has_hypothesis = False
+
     from jsonschema import ValidationError
 
     tool = core.registry.get("process.list")
 
-    @settings(max_examples=30)
-    @given(
-        st.one_of(st.booleans(), st.text(max_size=10), st.integers(max_value=0), st.integers(min_value=101))
-    )
-    def check(value):
-        with pytest.raises(ValidationError):
-            core.registry.validate(tool, {"limit": value})
+    if has_hypothesis:
+        @settings(max_examples=30)
+        @given(
+            st.one_of(st.booleans(), st.text(max_size=10), st.integers(max_value=0), st.integers(min_value=101))
+        )
+        def check(value):
+            with pytest.raises(ValidationError):
+                core.registry.validate(tool, {"limit": value})
 
-    check()
+        check()
+    else:
+        for val in [True, False, "invalid", "", 0, -1, 101, 500]:
+            with pytest.raises(ValidationError):
+                core.registry.validate(tool, {"limit": val})
 
 
 async def test_r3_requires_local_typed_phrase(core):

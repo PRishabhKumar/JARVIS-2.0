@@ -254,6 +254,15 @@ async def run_voice(args, settings):
             return
         print(f"\n[You]: {normalized}")
         lower = normalized.casefold().rstrip(".!?")
+        if terminal.pending is not None:
+            if lower in {"yes", "approve", "confirm", "proceed", "i approve", "do it"}:
+                print("\n[Confirmation APPROVED via voice]")
+                terminal.answer("yes")
+                return
+            elif lower in {"no", "deny", "cancel", "stop", "abort", "don't"}:
+                print("\n[Confirmation DENIED via voice]")
+                terminal.answer("no")
+                return
         if lower in {"stop", "cancel", "halt"}:
             print("\n[JARVIS]: Halting active action.")
             core.stop()
