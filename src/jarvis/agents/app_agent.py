@@ -11,12 +11,13 @@ from jarvis.registry import schema, TEXT, PATH
 
 
 def register(registry, settings, scope):
-    apps = {key: tuple(argv) for key, argv in settings.apps.items()}
-    for argv in apps.values():
+    apps = {}
+    for key, argv in settings.apps.items():
         if not argv or not Path(argv[0]).is_absolute() or not Path(argv[0]).is_file():
-            raise ValueError("application executable must be an existing absolute path")
+            continue
         if Path(argv[0]).suffix.lower() in {".bat", ".cmd", ".ps1", ".sh"}:
-            raise ValueError("script launch profiles are not allowed")
+            continue
+        apps[key] = tuple(argv)
 
     async def launch(args):
         argv = apps.get(args["app_id"])

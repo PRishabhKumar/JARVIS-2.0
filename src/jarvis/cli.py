@@ -62,7 +62,7 @@ def parser():
     p.add_argument(
         "command",
         nargs="?",
-        choices=["run", "voice", "tools", "doctor", "credentials", "satellite", "server", "evaluate-wake", "smoke"],
+        choices=["run", "voice", "tools", "doctor", "credentials", "satellite", "server", "deck", "evaluate-wake", "smoke"],
         default="run",
     )
     p.add_argument("arguments", nargs="*")
@@ -77,6 +77,8 @@ def parser():
     p.add_argument("--echo-guard", action="store_true", default=True, help="Drop microphone audio while JARVIS is actively speaking")
     p.add_argument("--wake-model", help="Explicit locally installed ONNX wake model")
     p.add_argument("--wake-name", default="hey_jarvis")
+    p.add_argument("--wake-threshold", type=float, default=0.5, help="Wake word detection threshold (default: 0.5)")
+    p.add_argument("--always-listen", action="store_true", help="Bypass local wake word gate and stream microphone continuously")
     p.add_argument("--server-url", help="Optional authenticated HTTPS heartbeat server; no remote execution")
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8765)
@@ -224,9 +226,12 @@ async def run(args, settings):
 
 
 async def run_voice(args, settings):
+    import time
     from .models.gemini import GeminiSession
     from .storage.credentials import get_secret
     from .voice.audio import AudioIO
+    from .voice.satellite import ActivationGate
+    from .voice.wakeword import LocalWakeDetector, find_wake_model
 
     registry = build_registry(settings)
     terminal = Terminal()
@@ -248,6 +253,21 @@ async def run_voice(args, settings):
     voice_name = getattr(args, "voice_name", None) or settings.voice_name
     stop_event = asyncio.Event()
 
+    # Configure wake word gating: by default, ambient audio is 100% local until "Hey JARVIS" is detected
+    always_listen = getattr(args, "always_listen", False)
+    wake_gate = None
+
+    if not always_listen:
+        wake_path = find_wake_model(getattr(args, "wake_model", None) or getattr(settings, "wake_model", None))
+        if wake_path:
+            wake_name = getattr(args, "wake_name", None) or getattr(settings, "wake_name", "hey_jarvis")
+            threshold = getattr(args, "wake_threshold", None) or getattr(settings, "wake_threshold", 0.5)
+            detector = LocalWakeDetector(wake_path, name=wake_name, threshold=threshold)
+            wake_gate = ActivationGate(detector, session_seconds=25)
+            print(f"[wake-word] Local acoustic wake detector active: '{wake_name}' (model: {wake_path.name})")
+        else:
+            print("[wake-word WARNING] Wake model assets not found. Streaming microphone continuously.")
+
     async def on_input_transcript(text):
         normalized = text.strip()
         if not normalized:
@@ -263,21 +283,38 @@ async def run_voice(args, settings):
                 print("\n[Confirmation DENIED via voice]")
                 terminal.answer("no")
                 return
+        if lower in {"sleep", "go to sleep", "stop listening", "standby", "that's all", "goodbye jarvis", "bye"}:
+            print("\n💤 [JARVIS]: Entering standby mode. Say 'Hey JARVIS' to wake me.")
+            if wake_gate:
+                wake_gate.sleep()
+            audio.clear()
+            if live:
+                await live.interrupt()
+            return
         if lower in {"stop", "cancel", "halt"}:
             print("\n[JARVIS]: Halting active action.")
             core.stop()
             audio.clear()
+            if wake_gate:
+                wake_gate.sleep()
             if live:
                 await live.interrupt()
-        elif lower in {"quit", "exit", "shutdown jarvis", "goodbye jarvis", "bye jarvis"}:
+            return
+        elif lower in {"quit", "exit", "shutdown jarvis", "goodbye", "quit jarvis"}:
             print("\n[JARVIS]: Goodbye! Shutting down voice session.")
             stop_event.set()
+            return
+
+        if wake_gate:
+            wake_gate.active_until = time.monotonic() + 25.0
 
     async def on_tool_call(name, tool_args):
         print(f"\n⚡ [action] {name}({json.dumps(tool_args)})")
 
     async def on_tool_result(name, res):
         print(f"✓ [result] {res.status}")
+        if wake_gate:
+            wake_gate.active_until = time.monotonic() + 20.0
 
     active_count = len(registry.declarations(writes=settings.allow_mutations))
     print("\n" + "=" * 65)
@@ -286,7 +323,11 @@ async def run_voice(args, settings):
     print(f" Model:       {model_name} (Gemini Live Stream)")
     print(f" Voice:       {voice_name} · Audio: 16kHz In / 24kHz Out PCM")
     print(f" Tools:       {active_count} Registered System Tools (mutations: {settings.allow_mutations})")
-    print(" Microphone:  ACTIVE · Hands-free (Say 'exit' or press Ctrl+C to quit)")
+    if wake_gate:
+        print(" Privacy:     PROTECTED · No audio sent to Gemini until called by name")
+        print(" Status:      STANDBY · Say 'Hey JARVIS' to activate (Say 'exit' to quit)")
+    else:
+        print(" Microphone:  ACTIVE · Continuous hands-free (Say 'exit' to quit)")
     print("=" * 65 + "\n")
 
     live = GeminiSession(
@@ -305,15 +346,38 @@ async def run_voice(args, settings):
     try:
         print("[connecting] Initializing Gemini Live bidirectional stream...")
         await live.connect()
-        print("[online] Connected! JARVIS is listening. Speak to your microphone...\n")
+        if wake_gate:
+            print("[ready] Connected! JARVIS is on STANDBY. Ambient audio is kept 100% local.")
+            print("[ready] Call out 'Hey JARVIS' whenever you need assistance.\n")
+        else:
+            print("[online] Connected! JARVIS is listening. Speak to your microphone...\n")
 
         async def mic_loop():
             try:
                 echo_guard = getattr(args, "echo_guard", True)
+                was_active = False
                 async for chunk in audio.capture(echo_guard=echo_guard):
                     if stop_event.is_set() or live.failed or not live.session:
                         break
-                    await live.send_audio(chunk)
+
+                    if wake_gate:
+                        state = wake_gate.feed(chunk)
+                        if state == "local_only":
+                            if was_active:
+                                was_active = False
+                                print("\n💤 [Standby] Active window closed. Audio is local only. Say 'Hey JARVIS' to wake me.")
+                            # Zero audio sent to Gemini! Audio is strictly kept local.
+                            continue
+                        elif state == "wake":
+                            was_active = True
+                            print("\n🔔 [Wake Word Detected] 'Hey JARVIS' recognized! I'm listening...")
+                            await live.send_audio(chunk)
+                            continue
+                        elif state == "active":
+                            was_active = True
+                            await live.send_audio(chunk)
+                    else:
+                        await live.send_audio(chunk)
             except asyncio.CancelledError:
                 pass
             except Exception as e:
@@ -384,6 +448,10 @@ def main():
             from .server import serve
 
             serve(args)
+        elif args.command == "deck":
+            from .deck_server import serve_deck
+
+            serve_deck(host=args.host, port=args.port if args.port != 8765 else 8000, settings=settings)
         elif args.command == "evaluate-wake":
             from .voice.evaluate import main as evaluate
 
@@ -392,9 +460,9 @@ def main():
             asyncio.run(run(args, settings))
     except KeyboardInterrupt:
         print("\n[stopped] Interrupted by local user.")
-    except Exception:
+    except Exception as e:
         print(
-            "[error] Startup/request failed. Check configuration, optional dependencies, OS keyring, model access and audio devices. No raw exception or credential was logged."
+            f"[error] Startup/request failed: {e}. Check configuration, optional dependencies, OS keyring, model access and audio devices."
         )
         raise SystemExit(1)
 

@@ -15,6 +15,9 @@ class Settings(StrictModel):
     confirmation_threshold: str = "R2"
     max_calls: int = Field(default=25, ge=1, le=100)
     voice_name: str = "Puck"
+    wake_model: str = "models/hey_jarvis/hey_jarvis.onnx"
+    wake_name: str = "hey_jarvis"
+    wake_threshold: float = 0.5
 
     @classmethod
     def load(cls, path: str | None = None):
@@ -51,6 +54,15 @@ class Settings(StrictModel):
                 data["confirmation_threshold"] = raw_t
         if "voice_name" not in data and (os.environ.get("JARVIS_VOICE") or os.environ.get("JARVIS_VOICE_NAME")):
             data["voice_name"] = (os.environ.get("JARVIS_VOICE") or os.environ.get("JARVIS_VOICE_NAME")).strip("\"'")
+        if "wake_model" not in data and os.environ.get("JARVIS_WAKE_MODEL"):
+            data["wake_model"] = os.environ["JARVIS_WAKE_MODEL"].strip("\"'")
+        if "wake_name" not in data and os.environ.get("JARVIS_WAKE_NAME"):
+            data["wake_name"] = os.environ["JARVIS_WAKE_NAME"].strip("\"'")
+        if "wake_threshold" not in data and os.environ.get("JARVIS_WAKE_THRESHOLD"):
+            try:
+                data["wake_threshold"] = float(os.environ["JARVIS_WAKE_THRESHOLD"])
+            except ValueError:
+                pass
         if "max_calls" not in data and os.environ.get("JARVIS_MAX_CALLS"):
             try:
                 data["max_calls"] = int(os.environ["JARVIS_MAX_CALLS"])

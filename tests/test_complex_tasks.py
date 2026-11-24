@@ -244,3 +244,51 @@ async def test_app_open_target_validation(test_env):
     ))
     assert res_missing.status == "failed"
     assert res_missing.error_code == "RESOURCE_NOT_FOUND" or res_missing.error_code == "TARGET_NOT_FOUND"
+
+
+@pytest.mark.asyncio
+async def test_wake_word_gating_blocks_ambient_audio():
+    from jarvis.voice.satellite import ActivationGate
+    from jarvis.voice.wakeword import find_wake_model
+
+    # Verify wake model asset is discovered
+    wake_path = find_wake_model()
+    assert wake_path is not None
+    assert wake_path.name == "hey_jarvis.onnx"
+
+    class MockDetector:
+        def __init__(self):
+            self.triggered = False
+
+        def feed(self, chunk):
+            return self.triggered
+
+        def reset(self):
+            self.triggered = False
+
+    det = MockDetector()
+    gate = ActivationGate(det, session_seconds=10)
+
+    # 1. In standby, ambient sound is STRICTLY local_only (zero audio to Gemini)
+    assert gate.feed(b"ambient conversation", now=100) == "local_only"
+    assert gate.feed(b"background tv noise", now=101) == "local_only"
+
+    # 2. When wake word is detected
+    det.triggered = True
+    assert gate.feed(b"hey jarvis", now=102) == "wake"
+    det.triggered = False
+
+    # 3. Active conversation window allows audio to flow
+    assert gate.feed(b"organize my files", now=103) == "active"
+    assert gate.feed(b"follow up command", now=110) == "active"
+
+    # 4. Silence timeout automatically puts it back to sleep
+    assert gate.feed(b"ambient sound after timeout", now=115) == "local_only"
+
+    # 5. Explicit sleep puts it into local_only immediately
+    det.triggered = True
+    assert gate.feed(b"hey jarvis", now=120) == "wake"
+    det.triggered = False
+    assert gate.feed(b"some command", now=121) == "active"
+    gate.sleep()
+    assert gate.feed(b"ambient after sleep", now=122) == "local_only"
